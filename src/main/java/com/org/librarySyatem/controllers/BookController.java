@@ -2,7 +2,6 @@ package com.org.librarySyatem.controllers;
 
 
 import com.org.librarySyatem.entity.Book;
-import com.org.librarySyatem.entity.BookRequest;
 import com.org.librarySyatem.services.BookService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,8 +36,7 @@ public class BookController {
 
     @PostMapping
     @Operation(summary = "Add a new book", description = "Create a new book in the library.")
-
-    public ResponseEntity<Book> createBook(@RequestBody BookRequest bookRequest) {
+    public ResponseEntity<Book> createBook(@RequestBody Book bookRequest) {
         Book savedBook = bookService.saveBook(bookRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedBook);
     }
@@ -54,5 +52,11 @@ public class BookController {
     public ResponseEntity<Void> deleteBook(@PathVariable Long id) {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/by-author")
+    @Operation(summary = "Get a book by ID", description = "Retrieve a book's details by its ID.")
+    public List<Book> findBooksByAuthor(@RequestParam String authorName) {
+        return bookService.findBooksByAuthor(authorName);
     }
 }

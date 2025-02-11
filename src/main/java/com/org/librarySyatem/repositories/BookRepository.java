@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface BookRepository extends JpaRepository<Book, Long> {
-
+    List<Book> findByAuthorName(String authorName);
 }
