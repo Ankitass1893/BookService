@@ -17,19 +17,30 @@ public class SecurityConfig {
         this.jwtUtil = jwtUtil;
     }
 
+    //    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        return http
+//                .csrf(csrf -> csrf.disable())
+//                .authorizeHttpRequests(auth ->
+//                        auth.requestMatchers("/api/auth/login",  "/swagger-ui/**",
+//                                        "/v3/api-docs/**",   // ✅ Allow API Docs
+//                                        "/api-docs/**").permitAll() //.requestMatchers("/api/books/**").permitAll()
+//
+//                                .anyRequest().authenticated()
+//                )
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
+//                .build();
+//    }
+//}
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/api/auth/login",  "/swagger-ui/**",
-                                        "/v3/api-docs/**",   // ✅ Allow API Docs
-                                        "/api-docs/**").permitAll() //.requestMatchers("/api/books/**").permitAll()
+        http
+                .csrf().disable()
+                .authorizeHttpRequests(auth -> auth
+                        .anyRequest().permitAll()  // Allow all requests
+                );
 
-                                .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new JwtFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class)
-                .build();
+        return http.build();
     }
 }
